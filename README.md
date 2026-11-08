@@ -1,6 +1,7 @@
 # E-Commerce Sales & Customer Analytics
 
 **Tools:** MySQL · Power BI · DAX · Power Query
+
 **Dataset:** Kaggle — synthetic U.S. e-commerce data, 2019–2025 (~80K orders, ~69K customers)
 
 **[View the live dashboard](https://app.powerbi.com/view?r=eyJrIjoiMmM2YjFiNjYtNTY5MS00ZGEyLWFmZjQtNmUyZGEyZjY3ZTYyIiwidCI6ImM2ZTU0OWIzLTVmNDUtNDAzMi1hYWU5LWQ0MjQ0ZGM1YjJjNCJ9)** · **[Portfolio](https://codebasics.io/portfolio/NAVEEN-ORSU)** · **[LinkedIn](https://www.linkedin.com/in/naveenorsu/)**
