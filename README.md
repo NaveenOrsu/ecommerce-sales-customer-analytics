@@ -12,11 +12,18 @@
 
 Find where the business is growing and where it is losing value, across sales, product profitability and customer retention over 7 years.
 
+## SQL in this repository
+
+| File | What it does |
+| --- | --- |
+| [`sql/01_data_cleaning_views.sql`](sql/01_data_cleaning_views.sql) | Builds the 6 cleaned views the report runs on |
+| [`sql/02_rfm_customer_segmentation.sql`](sql/02_rfm_customer_segmentation.sql) | RFM scoring and the 6 customer segments |
+
 ## Data preparation (MySQL)
 
 Raw tables had mixed date formats, currency stored as text, negative values, blank strings, invalid ages and duplicate rows.
 
-Built **7 MySQL views** as a clean reporting layer:
+Built **6 cleaned views** as a reporting layer:
 
 | View | Purpose |
 | --- | --- |
@@ -24,9 +31,8 @@ Built **7 MySQL views** as a clean reporting layer:
 | `fact_order_items` | Currency text stripped; negative prices corrected with `ABS` |
 | `fact_order_payments` | Payment types standardised; blanks kept as NULL via `NULLIF` |
 | `fact_order_reviews` | Review dates cast to DATE |
-| `dim_products` | Blank categories defaulted to `Uncategorized`; duplicates ranked out |
-| `dim_customers` | Age validated 0–100; first order date and order count via window functions |
-| `rfm_segment` | RFM scoring and customer segmentation |
+| `dim_Products` | Blank categories defaulted to `Uncategorized`; duplicates ranked out |
+| `dim_customers` | Age validated 0–100; first order month and order count via window functions |
 
 **Techniques used:** CTEs · `ROW_NUMBER` de-duplication · `COALESCE` / `NULLIF` · `CASE` · `LOWER` / `TRIM` standardisation · type casting
 
@@ -35,7 +41,7 @@ Built **7 MySQL views** as a clean reporting layer:
 - **Recency** — `DATEDIFF` from the 31-Jan-2026 snapshot date to the last order, scored with `NTILE(3)`
 - **Frequency** — binary score: repeat buyer (2+ orders) vs one-time buyer
 - **Monetary** — `NTILE(3)` on total product spend
-- Top category per customer selected with `ROW_NUMBER`, then classified as Durable, Repeatable or Other
+- Each customer is tagged with the category they last bought from, grouped into Durable, Repeatable or Other
 - Output: **6 segments** — Champions, Active Repeat Buyers, Recent One-Time Buyers, One-Time High Value, At Risk, Hibernating
 
 ## Power BI model
@@ -57,21 +63,3 @@ Built **7 MySQL views** as a clean reporting layer:
 2. Shift marketing spend toward high-margin Fashion
 3. Q4 stock planning on Electronics volume
 4. Product bundles to lift AOV
-
-## Repository structure
-
-```
-sql/        01_data_cleaning_views.sql, 02_rfm_segmentation.sql
-powerbi/    ecommerce_dashboard.pbix
-images/     dashboard screenshots
-docs/       project summary (optional)
-```
-
-## Dashboard screenshots
-
-<!-- Upload PNGs to images/ then uncomment:
-![Overview](images/01_overview.png)
-![Sales Analysis](images/02_sales_analysis.png)
-![Product Analysis](images/03_product_analysis.png)
-![Customer Analysis](images/04_customer_analysis.png)
--->
